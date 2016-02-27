@@ -5,5 +5,5 @@ from api import views
 
 urlpatterns = patterns('',
     url(r'^invoices/$', views.invoice_list, name='invoice_list'),
-    url(r'^invoice/(?P<pk>[0-9]+)/$', views.invoice_detail, name='invoice_detail'),
+    url(r'^invoices/(?P<pk>[0-9]+)/$', views.invoice_detail, name='invoice_detail'),
     )
