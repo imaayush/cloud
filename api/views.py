@@ -33,13 +33,13 @@ def invoice_list(request):
         data = request.data
         if serializer.is_valid():
             save = InvoiceSerializer(data=data)
-            save.create(request.data)
+            save.create(request.data, request.method)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'DELETE'])
+@api_view(['GET', 'DELETE', 'PUT'])
 def invoice_detail(request, pk):
     """ select inovice by  id 
         """
@@ -53,10 +53,16 @@ def invoice_detail(request, pk):
             return Response({'error':'no data found'}, status=status.HTTP_201_CREATED)
         serializer = InvoiceGetSerializer(invoice, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    elif  request.method == 'DELETE':
+    elif request.method == 'DELETE':
         transactions = Transaction.objects.filter(invoice_id=pk)
         transactions.delete()
         invoice = Invoice.objects.filter(id=pk)
         invoice.delete()
         return Response({'deleted':'success'}, status=status.HTTP_201_CREATED)
-
+    elif request.method == 'PUT':
+        serializer = InvoiceSerializer(data=request.data)
+        data = request.data
+        if serializer.is_valid():
+            save = InvoiceSerializer(data=data)
+            save.create(request.data, request.method)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
