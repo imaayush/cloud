@@ -45,7 +45,6 @@ def invoice_detail(request, pk):
         """
     if request.method == 'GET':
         invoice = Invoice.objects.filter(id=pk)
-        #import pdb;pdb.set_trace()
         transactions = Transaction.objects.filter(invoice_id=pk)
         if invoice:
             invoice[0].transactions = transactions
